@@ -1,1119 +1,994 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 9,
-   "id": "7712f280-6ce8-474c-80e2-fcfc8a493b1f",
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Requirement already satisfied: streamlit in c:\\users\\arifina\\anaconda3\\lib\\site-packages (1.51.0)\n",
-      "Requirement already satisfied: altair!=5.4.0,!=5.4.1,<6,>=4.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (5.5.0)\n",
-      "Requirement already satisfied: blinker<2,>=1.5.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (1.9.0)\n",
-      "Requirement already satisfied: cachetools<7,>=4.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (5.5.1)\n",
-      "Requirement already satisfied: click<9,>=7.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (8.2.1)\n",
-      "Requirement already satisfied: numpy<3,>=1.23 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (2.3.5)\n",
-      "Requirement already satisfied: packaging<26,>=20 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (25.0)\n",
-      "Requirement already satisfied: pandas<3,>=1.4.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (2.3.3)\n",
-      "Requirement already satisfied: pillow<13,>=7.1.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (12.0.0)\n",
-      "Requirement already satisfied: protobuf<7,>=3.20 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (5.29.3)\n",
-      "Requirement already satisfied: pyarrow<22,>=7.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (21.0.0)\n",
-      "Requirement already satisfied: requests<3,>=2.27 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (2.32.5)\n",
-      "Requirement already satisfied: tenacity<10,>=8.1.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (9.1.2)\n",
-      "Requirement already satisfied: toml<2,>=0.10.1 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (0.10.2)\n",
-      "Requirement already satisfied: typing-extensions<5,>=4.4.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (4.15.0)\n",
-      "Requirement already satisfied: watchdog<7,>=2.1.5 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (4.0.2)\n",
-      "Requirement already satisfied: gitpython!=3.1.19,<4,>=3.0.7 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (3.1.45)\n",
-      "Requirement already satisfied: tornado!=6.5.0,<7,>=6.0.3 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from streamlit) (6.5.1)\n",
-      "Requirement already satisfied: jinja2 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (3.1.6)\n",
-      "Requirement already satisfied: jsonschema>=3.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (4.25.0)\n",
-      "Requirement already satisfied: narwhals>=1.14.2 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (2.7.0)\n",
-      "Requirement already satisfied: colorama in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from click<9,>=7.0->streamlit) (0.4.6)\n",
-      "Requirement already satisfied: gitdb<5,>=4.0.1 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from gitpython!=3.1.19,<4,>=3.0.7->streamlit) (4.0.12)\n",
-      "Requirement already satisfied: smmap<6,>=3.0.1 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.19,<4,>=3.0.7->streamlit) (4.0.0)\n",
-      "Requirement already satisfied: python-dateutil>=2.8.2 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from pandas<3,>=1.4.0->streamlit) (2.9.0.post0)\n",
-      "Requirement already satisfied: pytz>=2020.1 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from pandas<3,>=1.4.0->streamlit) (2025.2)\n",
-      "Requirement already satisfied: tzdata>=2022.7 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from pandas<3,>=1.4.0->streamlit) (2025.2)\n",
-      "Requirement already satisfied: charset_normalizer<4,>=2 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from requests<3,>=2.27->streamlit) (3.4.4)\n",
-      "Requirement already satisfied: idna<4,>=2.5 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from requests<3,>=2.27->streamlit) (3.11)\n",
-      "Requirement already satisfied: urllib3<3,>=1.21.1 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from requests<3,>=2.27->streamlit) (2.5.0)\n",
-      "Requirement already satisfied: certifi>=2017.4.17 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from requests<3,>=2.27->streamlit) (2026.2.25)\n",
-      "Requirement already satisfied: attrs>=22.2.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (25.4.0)\n",
-      "Requirement already satisfied: jsonschema-specifications>=2023.03.6 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (2025.9.1)\n",
-      "Requirement already satisfied: referencing>=0.28.4 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (0.37.0)\n",
-      "Requirement already satisfied: rpds-py>=0.7.1 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (0.28.0)\n",
-      "Requirement already satisfied: six>=1.5 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from python-dateutil>=2.8.2->pandas<3,>=1.4.0->streamlit) (1.17.0)\n",
-      "Requirement already satisfied: MarkupSafe>=2.0 in c:\\users\\arifina\\anaconda3\\lib\\site-packages (from jinja2->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (3.0.2)\n",
-      "Note: you may need to restart the kernel to use updated packages.\n"
-     ]
-    }
-   ],
-   "source": [
-    "%pip install streamlit\n",
-    "\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "bf0a4d51-ed37-4746-b9db-31cec1a7f1b2",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 20,
-   "id": "8097f717-fdcf-475a-bb80-3a65eed7d053",
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Overwriting app.py\n"
-     ]
-    }
-   ],
-   "source": [
-    "%%writefile app.py\n",
-    "import html\n",
-    "import streamlit as st\n",
-    "\n",
-    "# =====================================================\n",
-    "# 1. KONFIGURASI HALAMAN\n",
-    "# =====================================================\n",
-    "\n",
-    "st.set_page_config(\n",
-    "    page_title=\"RSA: Enkripsi & Dekripsi\",\n",
-    "    page_icon=\"🔐\",\n",
-    "    layout=\"wide\",\n",
-    "    initial_sidebar_state=\"collapsed\"\n",
-    ")\n",
-    "\n",
-    "LEBAR_KODE = 3\n",
-    "KODE_MAKS = 255\n",
-    "\n",
-    "# Batas maksimal bilangan prima yang bisa dipilih pada slider.\n",
-    "BATAS_PRIMA = 1000\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 2. TAMPILAN (CSS)\n",
-    "# =====================================================\n",
-    "# Palet warna:\n",
-    "#   teal tua   #0B4A4A  latar hero\n",
-    "#   teal       #0E7C7B  warna utama (tombol, slider, angka)\n",
-    "#   mint       #E3F3F1  latar kunci publik\n",
-    "#   kuning     #F5B83D  penanda langkah dan kunci privat\n",
-    "#   tinta      #10302F  teks utama\n",
-    "# Font:\n",
-    "#   Bricolage Grotesque untuk judul dan angka\n",
-    "#   Figtree untuk teks biasa\n",
-    "#   JetBrains Mono untuk angka kunci dan ciphertext\n",
-    "\n",
-    "CSS = \"\"\"\n",
-    "<style>\n",
-    "@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');\n",
-    "\n",
-    ":root {\n",
-    "    --tinta: #10302F;\n",
-    "    --redup: #4B6A68;\n",
-    "    --teal: #0E7C7B;\n",
-    "    --teal-gelap: #0A5F5E;\n",
-    "    --teal-tua: #0B4A4A;\n",
-    "    --mint: #E3F3F1;\n",
-    "    --garis: #BFD9D6;\n",
-    "    --latar: #F2F8F7;\n",
-    "    --kuning: #F5B83D;\n",
-    "    --kuning-muda: #FFF1CF;\n",
-    "    --font-judul: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif;\n",
-    "    --font-isi: 'Figtree', 'Segoe UI', sans-serif;\n",
-    "    --font-kode: 'JetBrains Mono', Consolas, monospace;\n",
-    "}\n",
-    "\n",
-    "/* ---------- Dasar halaman ---------- */\n",
-    ".stApp {\n",
-    "    background: var(--latar);\n",
-    "    color: var(--tinta);\n",
-    "    font-family: var(--font-isi);\n",
-    "}\n",
-    ".stApp p, .stApp li, .stApp label, .stApp input, .stApp textarea, .stApp button {\n",
-    "    font-family: var(--font-isi);\n",
-    "}\n",
-    ".block-container {\n",
-    "    max-width: 1040px;\n",
-    "    padding-top: 2.2rem;\n",
-    "    padding-bottom: 4rem;\n",
-    "}\n",
-    "#MainMenu, footer { visibility: hidden; }\n",
-    "[data-testid=\"stHeader\"] { background: transparent; }\n",
-    "[data-testid=\"stAppDeployButton\"] { display: none; }\n",
-    "[data-testid=\"InputInstructions\"] { display: none; }\n",
-    "\n",
-    "/* ---------- Hero ---------- */\n",
-    ".hero {\n",
-    "    background: var(--teal-tua);\n",
-    "    border-radius: 26px;\n",
-    "    padding: 2.3rem 2.5rem;\n",
-    "    display: flex;\n",
-    "    align-items: center;\n",
-    "    justify-content: space-between;\n",
-    "    gap: 2rem;\n",
-    "    overflow: hidden;\n",
-    "    margin-bottom: 1.5rem;\n",
-    "}\n",
-    ".hero-teks { flex: 1 1 auto; max-width: 29rem; }\n",
-    ".hero-judul {\n",
-    "    font-family: var(--font-judul);\n",
-    "    font-weight: 700;\n",
-    "    font-size: 2.7rem;\n",
-    "    line-height: 1.08;\n",
-    "    letter-spacing: -0.02em;\n",
-    "    color: #FFFFFF;\n",
-    "    margin-bottom: 0.9rem;\n",
-    "}\n",
-    ".hero-ket {\n",
-    "    color: #CFE8E6;\n",
-    "    font-size: 1.05rem;\n",
-    "    line-height: 1.6;\n",
-    "    margin: 0;\n",
-    "}\n",
-    ".hero-prima {\n",
-    "    display: flex;\n",
-    "    flex-wrap: wrap;\n",
-    "    justify-content: flex-end;\n",
-    "    align-items: baseline;\n",
-    "    gap: 0.3rem 1rem;\n",
-    "    max-width: 25rem;\n",
-    "    font-family: var(--font-judul);\n",
-    "    font-weight: 700;\n",
-    "    line-height: 1;\n",
-    "    color: #1E7F7C;\n",
-    "    user-select: none;\n",
-    "}\n",
-    ".hero-prima .s { font-size: 1.4rem; }\n",
-    ".hero-prima .m { font-size: 2.2rem; }\n",
-    ".hero-prima .l { font-size: 3.4rem; }\n",
-    ".hero-prima .sorot { color: var(--kuning); }\n",
-    "\n",
-    "/* ---------- Navigasi (radio dibuat seperti tombol pil) ---------- */\n",
-    "div[role=\"radiogroup\"] { gap: 0.6rem; margin-bottom: 0.4rem; }\n",
-    "div[role=\"radiogroup\"] > label {\n",
-    "    background: #FFFFFF;\n",
-    "    border: 1.5px solid var(--garis);\n",
-    "    border-radius: 999px;\n",
-    "    padding: 0.4rem 1.5rem;\n",
-    "    cursor: pointer;\n",
-    "    transition: background 0.15s, border-color 0.15s;\n",
-    "}\n",
-    "div[role=\"radiogroup\"] > label > div:first-child { display: none; }\n",
-    "div[role=\"radiogroup\"] > label p {\n",
-    "    font-weight: 600;\n",
-    "    color: var(--teal-gelap);\n",
-    "}\n",
-    "div[role=\"radiogroup\"] > label:hover { border-color: var(--teal); }\n",
-    "div[role=\"radiogroup\"] > label:has(input:checked) {\n",
-    "    background: var(--teal);\n",
-    "    border-color: var(--teal);\n",
-    "}\n",
-    "div[role=\"radiogroup\"] > label:has(input:checked) p { color: #FFFFFF; }\n",
-    "\n",
-    "/* ---------- Kotak langkah ---------- */\n",
-    "div[class*=\"st-key-kotak\"] {\n",
-    "    background: #FFFFFF;\n",
-    "    border: 1.5px solid var(--garis);\n",
-    "    border-radius: 18px;\n",
-    "    padding: 1.4rem 1.6rem 1.5rem;\n",
-    "}\n",
-    ".langkah {\n",
-    "    display: flex;\n",
-    "    gap: 0.9rem;\n",
-    "    align-items: flex-start;\n",
-    "    margin-bottom: 0.6rem;\n",
-    "}\n",
-    ".nomor {\n",
-    "    flex: 0 0 2.2rem;\n",
-    "    height: 2.2rem;\n",
-    "    border-radius: 50%;\n",
-    "    background: var(--kuning);\n",
-    "    color: var(--tinta);\n",
-    "    font-family: var(--font-judul);\n",
-    "    font-weight: 700;\n",
-    "    font-size: 1.05rem;\n",
-    "    display: flex;\n",
-    "    align-items: center;\n",
-    "    justify-content: center;\n",
-    "}\n",
-    ".langkah-judul {\n",
-    "    font-family: var(--font-judul);\n",
-    "    font-weight: 700;\n",
-    "    font-size: 1.3rem;\n",
-    "    line-height: 1.2;\n",
-    "    color: var(--tinta);\n",
-    "}\n",
-    ".langkah-ket {\n",
-    "    color: var(--redup);\n",
-    "    font-size: 0.95rem;\n",
-    "    margin-top: 0.2rem;\n",
-    "}\n",
-    ".angka-besar {\n",
-    "    font-family: var(--font-judul);\n",
-    "    font-weight: 700;\n",
-    "    font-size: 3.4rem;\n",
-    "    line-height: 1;\n",
-    "    color: var(--teal);\n",
-    "    margin: 0.3rem 0 0.7rem;\n",
-    "}\n",
-    ".angka-besar span {\n",
-    "    font-size: 1.4rem;\n",
-    "    font-weight: 500;\n",
-    "    color: var(--redup);\n",
-    "    margin-right: 0.6rem;\n",
-    "}\n",
-    ".catatan {\n",
-    "    color: var(--redup);\n",
-    "    font-size: 0.88rem;\n",
-    "    margin-top: 0.2rem;\n",
-    "}\n",
-    "\n",
-    "/* ---------- Strip rumus n ---------- */\n",
-    ".rumus {\n",
-    "    background: var(--mint);\n",
-    "    border: 1.5px dashed #7FB8B4;\n",
-    "    border-radius: 14px;\n",
-    "    padding: 0.85rem 1.2rem;\n",
-    "    margin: 0.2rem 0;\n",
-    "    font-family: var(--font-judul);\n",
-    "    font-size: 1.2rem;\n",
-    "    color: var(--tinta);\n",
-    "}\n",
-    ".rumus b { color: var(--teal-gelap); font-size: 1.35rem; }\n",
-    "\n",
-    "/* ---------- Slider ---------- */\n",
-    "[data-testid=\"stSlider\"] div[role=\"slider\"] {\n",
-    "    background: var(--teal) !important;\n",
-    "    border: 3px solid #FFFFFF !important;\n",
-    "    box-shadow: 0 0 0 2px var(--teal) !important;\n",
-    "    height: 1.5rem;\n",
-    "    width: 1.5rem;\n",
-    "}\n",
-    "[data-testid=\"stThumbValue\"] {\n",
-    "    color: var(--teal-gelap) !important;\n",
-    "    font-family: var(--font-judul);\n",
-    "    font-weight: 700;\n",
-    "}\n",
-    "[data-testid=\"stTickBarMin\"], [data-testid=\"stTickBarMax\"] {\n",
-    "    color: var(--redup);\n",
-    "}\n",
-    "\n",
-    "/* ---------- Input teks ---------- */\n",
-    "div[data-baseweb=\"textarea\"], div[data-baseweb=\"input\"] {\n",
-    "    border: 1.5px solid var(--garis) !important;\n",
-    "    border-radius: 12px !important;\n",
-    "    background: #FFFFFF !important;\n",
-    "}\n",
-    "div[data-baseweb=\"base-input\"] { background: #FFFFFF !important; }\n",
-    "div[data-baseweb=\"textarea\"]:focus-within, div[data-baseweb=\"input\"]:focus-within {\n",
-    "    border-color: var(--teal) !important;\n",
-    "    box-shadow: 0 0 0 3px rgba(14, 124, 123, 0.18);\n",
-    "}\n",
-    ".stTextArea textarea, .stTextInput input {\n",
-    "    color: var(--tinta);\n",
-    "    font-size: 1rem;\n",
-    "}\n",
-    "\n",
-    "/* ---------- Tombol ---------- */\n",
-    ".stButton > button, .stDownloadButton > button {\n",
-    "    border-radius: 12px;\n",
-    "    font-weight: 600;\n",
-    "    padding: 0.6rem 1.5rem;\n",
-    "    transition: background 0.15s, border-color 0.15s;\n",
-    "}\n",
-    ".stButton > button[kind=\"primary\"], [data-testid=\"stBaseButton-primary\"] {\n",
-    "    background: var(--teal) !important;\n",
-    "    border: none !important;\n",
-    "    color: #FFFFFF !important;\n",
-    "}\n",
-    ".stButton > button[kind=\"primary\"]:hover, [data-testid=\"stBaseButton-primary\"]:hover {\n",
-    "    background: var(--teal-gelap) !important;\n",
-    "}\n",
-    ".stDownloadButton > button, [data-testid=\"stBaseButton-secondary\"] {\n",
-    "    background: #FFFFFF !important;\n",
-    "    color: var(--teal-gelap) !important;\n",
-    "    border: 1.5px solid var(--teal) !important;\n",
-    "}\n",
-    ".stDownloadButton > button:hover, [data-testid=\"stBaseButton-secondary\"]:hover {\n",
-    "    background: var(--mint) !important;\n",
-    "}\n",
-    "button:focus-visible {\n",
-    "    outline: 3px solid var(--kuning) !important;\n",
-    "    outline-offset: 2px;\n",
-    "}\n",
-    "\n",
-    "/* ---------- Pesan peringatan ---------- */\n",
-    "[data-testid=\"stAlert\"] { border-radius: 12px; }\n",
-    "\n",
-    "/* ---------- Blok kode (plaintext, ciphertext) ---------- */\n",
-    "[data-testid=\"stCode\"] {\n",
-    "    border: 1.5px solid var(--garis);\n",
-    "    border-radius: 12px;\n",
-    "    overflow: hidden;\n",
-    "}\n",
-    "[data-testid=\"stCode\"] pre, [data-testid=\"stCode\"] code {\n",
-    "    background: #F0F7F6 !important;\n",
-    "    color: var(--tinta) !important;\n",
-    "    font-family: var(--font-kode) !important;\n",
-    "    font-size: 0.9rem !important;\n",
-    "    white-space: pre-wrap !important;\n",
-    "    word-break: break-word;\n",
-    "}\n",
-    ".label {\n",
-    "    font-weight: 600;\n",
-    "    color: var(--tinta);\n",
-    "    margin: 1rem 0 0.35rem;\n",
-    "    font-size: 0.95rem;\n",
-    "}\n",
-    "\n",
-    "/* ---------- Kartu kunci ---------- */\n",
-    ".kunci-grid {\n",
-    "    display: grid;\n",
-    "    grid-template-columns: 1fr 1fr;\n",
-    "    gap: 1rem;\n",
-    "    margin: 0.8rem 0 0.4rem;\n",
-    "}\n",
-    ".kunci {\n",
-    "    border-radius: 16px;\n",
-    "    padding: 1.1rem 1.3rem;\n",
-    "    border: 1.5px solid;\n",
-    "}\n",
-    ".kunci.publik { background: var(--mint); border-color: #7FB8B4; }\n",
-    ".kunci.privat { background: var(--kuning-muda); border-color: #E3B04B; }\n",
-    ".kunci-judul {\n",
-    "    font-family: var(--font-judul);\n",
-    "    font-weight: 700;\n",
-    "    font-size: 1.15rem;\n",
-    "    margin-bottom: 0.5rem;\n",
-    "}\n",
-    ".kunci-baris {\n",
-    "    display: flex;\n",
-    "    align-items: baseline;\n",
-    "    gap: 0.7rem;\n",
-    "    font-family: var(--font-kode);\n",
-    "    font-weight: 500;\n",
-    "    font-size: 1.2rem;\n",
-    "    margin: 0.2rem 0;\n",
-    "    word-break: break-all;\n",
-    "}\n",
-    ".kunci-baris span { color: var(--redup); min-width: 1.2rem; }\n",
-    ".kunci-ket {\n",
-    "    margin-top: 0.7rem;\n",
-    "    color: var(--redup);\n",
-    "    font-size: 0.9rem;\n",
-    "}\n",
-    "\n",
-    "/* ---------- Kondisi kosong dan hasil dekripsi ---------- */\n",
-    ".kosong {\n",
-    "    border: 1.5px dashed var(--garis);\n",
-    "    border-radius: 16px;\n",
-    "    padding: 1.5rem;\n",
-    "    margin-top: 1rem;\n",
-    "    text-align: center;\n",
-    "    color: var(--redup);\n",
-    "}\n",
-    ".hasil-teks {\n",
-    "    background: var(--mint);\n",
-    "    border: 1.5px solid #7FB8B4;\n",
-    "    border-radius: 14px;\n",
-    "    padding: 1.1rem 1.3rem;\n",
-    "    font-size: 1.25rem;\n",
-    "    white-space: pre-wrap;\n",
-    "    word-break: break-word;\n",
-    "}\n",
-    ".footer-kecil {\n",
-    "    color: var(--redup);\n",
-    "    font-size: 0.85rem;\n",
-    "    margin-top: 2.2rem;\n",
-    "}\n",
-    "\n",
-    "/* ---------- Layar kecil ---------- */\n",
-    "@media (max-width: 760px) {\n",
-    "    .hero { padding: 1.6rem; }\n",
-    "    .hero-judul { font-size: 2rem; }\n",
-    "    .hero-prima { display: none; }\n",
-    "    .kunci-grid { grid-template-columns: 1fr; }\n",
-    "    div[class*=\"st-key-kotak\"] { padding: 1.1rem 1.1rem 1.2rem; }\n",
-    "}\n",
-    "@media (prefers-reduced-motion: reduce) {\n",
-    "    * { transition: none !important; }\n",
-    "}\n",
-    "</style>\n",
-    "\"\"\"\n",
-    "\n",
-    "st.markdown(CSS, unsafe_allow_html=True)\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 3. KOMPONEN TAMPILAN\n",
-    "# =====================================================\n",
-    "\n",
-    "PRIMA_HERO = [\n",
-    "    (2, \"s\"), (3, \"m\"), (5, \"s\"), (7, \"l\"), (11, \"s\"), (13, \"m\"),\n",
-    "    (17, \"s\"), (19, \"m\"), (23, \"l\"), (29, \"s\"), (31, \"m\"), (37, \"s\"),\n",
-    "    (41, \"m\"), (43, \"s\"), (47, \"l sorot\"), (53, \"s\"), (59, \"m\"),\n",
-    "    (61, \"s\"), (67, \"m\"), (71, \"l sorot\"),\n",
-    "]\n",
-    "\n",
-    "\n",
-    "def tampilkan_hero():\n",
-    "    angka_prima = \"\".join(\n",
-    "        f'<span class=\"{kelas}\">{angka}</span>'\n",
-    "        for angka, kelas in PRIMA_HERO\n",
-    "    )\n",
-    "    st.markdown(\n",
-    "        '<div class=\"hero\"><div class=\"hero-teks\">'\n",
-    "        '<div class=\"hero-judul\">Pesan rahasia dari dua bilangan prima</div>'\n",
-    "        '<p class=\"hero-ket\">Aplikasi belajar enkripsi dan dekripsi RSA. '\n",
-    "        'Pilih p dan q, tulis pesanmu, lalu lihat bagaimana pesan itu '\n",
-    "        'berubah menjadi deretan angka yang hanya bisa dibuka dengan '\n",
-    "        'kunci privat.</p></div>'\n",
-    "        f'<div class=\"hero-prima\" aria-hidden=\"true\">{angka_prima}</div>'\n",
-    "        '</div>',\n",
-    "        unsafe_allow_html=True\n",
-    "    )\n",
-    "\n",
-    "\n",
-    "def kepala_langkah(nomor, judul, keterangan):\n",
-    "    st.markdown(\n",
-    "        f'<div class=\"langkah\"><div class=\"nomor\">{nomor}</div>'\n",
-    "        f'<div><div class=\"langkah-judul\">{judul}</div>'\n",
-    "        f'<div class=\"langkah-ket\">{keterangan}</div></div></div>',\n",
-    "        unsafe_allow_html=True\n",
-    "    )\n",
-    "\n",
-    "\n",
-    "def angka_besar(huruf, nilai):\n",
-    "    st.markdown(\n",
-    "        f'<div class=\"angka-besar\"><span>{huruf} =</span>{nilai}</div>',\n",
-    "        unsafe_allow_html=True\n",
-    "    )\n",
-    "\n",
-    "\n",
-    "def label_kecil(teks):\n",
-    "    st.markdown(f'<div class=\"label\">{teks}</div>', unsafe_allow_html=True)\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 4. FUNGSI BILANGAN PRIMA\n",
-    "# =====================================================\n",
-    "\n",
-    "def cek_prima(n):\n",
-    "    \"\"\"Memeriksa apakah n merupakan bilangan prima.\"\"\"\n",
-    "    if n < 2:\n",
-    "        return False\n",
-    "    if n == 2:\n",
-    "        return True\n",
-    "    if n % 2 == 0:\n",
-    "        return False\n",
-    "\n",
-    "    pembagi = 3\n",
-    "    while pembagi * pembagi <= n:\n",
-    "        if n % pembagi == 0:\n",
-    "            return False\n",
-    "        pembagi += 2\n",
-    "\n",
-    "    return True\n",
-    "\n",
-    "\n",
-    "@st.cache_data\n",
-    "def daftar_prima(batas):\n",
-    "    \"\"\"Membuat daftar semua bilangan prima dari 2 sampai batas.\"\"\"\n",
-    "    return [angka for angka in range(2, batas + 1) if cek_prima(angka)]\n",
-    "\n",
-    "\n",
-    "DAFTAR_PRIMA = daftar_prima(BATAS_PRIMA)\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 5. FUNGSI MATEMATIKA RSA\n",
-    "# =====================================================\n",
-    "\n",
-    "def pbb(a, b):\n",
-    "    \"\"\"Menghitung Faktor Persekutuan Terbesar.\"\"\"\n",
-    "    while b != 0:\n",
-    "        a, b = b, a % b\n",
-    "    return a\n",
-    "\n",
-    "\n",
-    "def euclid_diperluas(a, b):\n",
-    "    \"\"\"Menghasilkan g, x, y sehingga a*x + b*y = g.\"\"\"\n",
-    "    if b == 0:\n",
-    "        return a, 1, 0\n",
-    "\n",
-    "    g, x, y = euclid_diperluas(b, a % b)\n",
-    "    return g, y, x - (a // b) * y\n",
-    "\n",
-    "\n",
-    "def balikan_mod(e, m):\n",
-    "    \"\"\"Menghitung invers modulo.\"\"\"\n",
-    "    g, x, _ = euclid_diperluas(e, m)\n",
-    "\n",
-    "    if g != 1:\n",
-    "        raise ValueError(\"Balikan modulo tidak ditemukan.\")\n",
-    "\n",
-    "    return x % m\n",
-    "\n",
-    "\n",
-    "def pangkat_mod(b, e, n):\n",
-    "    \"\"\"Menghitung b^e mod n dengan square-and-multiply.\"\"\"\n",
-    "    hasil = 1\n",
-    "    b %= n\n",
-    "\n",
-    "    while e > 0:\n",
-    "        if e % 2 == 1:\n",
-    "            hasil = (hasil * b) % n\n",
-    "        b = (b * b) % n\n",
-    "        e //= 2\n",
-    "\n",
-    "    return hasil\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 6. PEMBANGKITAN KUNCI RSA\n",
-    "# =====================================================\n",
-    "\n",
-    "def bangkitkan_kunci(p, q):\n",
-    "    \"\"\"Membuat kunci publik dan privat dari p dan q.\"\"\"\n",
-    "    if not cek_prima(p):\n",
-    "        raise ValueError(\"Nilai p harus bilangan prima.\")\n",
-    "\n",
-    "    if not cek_prima(q):\n",
-    "        raise ValueError(\"Nilai q harus bilangan prima.\")\n",
-    "\n",
-    "    if p == q:\n",
-    "        raise ValueError(\"Nilai p dan q harus berbeda.\")\n",
-    "\n",
-    "    n = p * q\n",
-    "    phi = (p - 1) * (q - 1)\n",
-    "\n",
-    "    # Gunakan e = 65537 jika memenuhi syarat.\n",
-    "    e = 65537\n",
-    "\n",
-    "    # Untuk contoh prima kecil, pilih e lain jika 65537 tidak sesuai.\n",
-    "    if e >= phi or pbb(e, phi) != 1:\n",
-    "        e = 3\n",
-    "        while e < phi and pbb(e, phi) != 1:\n",
-    "            e += 2\n",
-    "\n",
-    "    if e >= phi:\n",
-    "        raise ValueError(\"Tidak ditemukan nilai e yang sesuai.\")\n",
-    "\n",
-    "    d = balikan_mod(e, phi)\n",
-    "\n",
-    "    kunci_publik = (e, n)\n",
-    "    kunci_privat = (d, n)\n",
-    "\n",
-    "    return kunci_publik, kunci_privat\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 7. KONVERSI TEKS DAN ENKRIPSI/DEKRIPSI\n",
-    "# =====================================================\n",
-    "\n",
-    "def teks_ke_kode(teks):\n",
-    "    \"\"\"\n",
-    "    Mengubah setiap karakter menjadi kode ASCII 0–255.\n",
-    "    Mendukung huruf besar/kecil, angka, spasi, dan simbol ASCII.\n",
-    "    \"\"\"\n",
-    "    karakter_tidak_didukung = [\n",
-    "        karakter for karakter in teks\n",
-    "        if ord(karakter) > KODE_MAKS\n",
-    "    ]\n",
-    "\n",
-    "    if karakter_tidak_didukung:\n",
-    "        raise ValueError(\n",
-    "            \"Ada karakter di luar rentang ASCII 0–255. \"\n",
-    "            \"Untuk versi ini, emoji dan beberapa karakter Unicode \"\n",
-    "            \"belum didukung.\"\n",
-    "        )\n",
-    "\n",
-    "    return [ord(karakter) for karakter in teks]\n",
-    "\n",
-    "\n",
-    "def kode_ke_teks(kode):\n",
-    "    \"\"\"Mengubah daftar kode ASCII kembali menjadi teks.\"\"\"\n",
-    "    if any(angka < 0 or angka > KODE_MAKS for angka in kode):\n",
-    "        raise ValueError(\"Hasil dekripsi mengandung kode di luar 0–255.\")\n",
-    "\n",
-    "    return \"\".join(chr(angka) for angka in kode)\n",
-    "\n",
-    "\n",
-    "def enkripsi(daftar_kode, kunci_publik):\n",
-    "    \"\"\"Mengenkripsi setiap kode karakter dengan kunci publik.\"\"\"\n",
-    "    e, n = kunci_publik\n",
-    "\n",
-    "    if n <= KODE_MAKS:\n",
-    "        raise ValueError(\n",
-    "            \"n harus lebih besar dari 255. Pilih p dan q yang lebih besar.\"\n",
-    "        )\n",
-    "\n",
-    "    return [pangkat_mod(angka, e, n) for angka in daftar_kode]\n",
-    "\n",
-    "\n",
-    "def dekripsi(ciphertext, kunci_privat):\n",
-    "    \"\"\"Mendekripsi setiap angka ciphertext dengan kunci privat.\"\"\"\n",
-    "    d, n = kunci_privat\n",
-    "    return [pangkat_mod(angka, d, n) for angka in ciphertext]\n",
-    "\n",
-    "\n",
-    "def parse_ciphertext(teks_cipher):\n",
-    "    \"\"\"Membaca ciphertext berupa angka yang dipisahkan koma atau spasi.\"\"\"\n",
-    "    teks_cipher = teks_cipher.replace(\",\", \" \")\n",
-    "    bagian = teks_cipher.split()\n",
-    "\n",
-    "    if not bagian:\n",
-    "        raise ValueError(\"Ciphertext belum diisi.\")\n",
-    "\n",
-    "    try:\n",
-    "        angka = [int(item) for item in bagian]\n",
-    "    except ValueError:\n",
-    "        raise ValueError(\n",
-    "            \"Ciphertext harus berupa angka yang dipisahkan koma atau spasi.\"\n",
-    "        )\n",
-    "\n",
-    "    if any(item < 0 for item in angka):\n",
-    "        raise ValueError(\"Ciphertext tidak boleh berisi angka negatif.\")\n",
-    "\n",
-    "    return angka\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 8. STATE UNTUK SLIDER PRIMA p DAN q\n",
-    "# =====================================================\n",
-    "# Nilai p dan q disimpan terpisah dari widget slider supaya\n",
-    "# tidak hilang saat pengguna berpindah ke halaman Dekripsi.\n",
-    "\n",
-    "if \"nilai_p\" not in st.session_state:\n",
-    "    st.session_state[\"nilai_p\"] = 47\n",
-    "\n",
-    "if \"nilai_q\" not in st.session_state:\n",
-    "    st.session_state[\"nilai_q\"] = 71\n",
-    "\n",
-    "\n",
-    "def simpan_p():\n",
-    "    st.session_state[\"nilai_p\"] = st.session_state[\"slider_p\"]\n",
-    "\n",
-    "\n",
-    "def simpan_q():\n",
-    "    st.session_state[\"nilai_q\"] = st.session_state[\"slider_q\"]\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 9. KEPALA HALAMAN DAN NAVIGASI\n",
-    "# =====================================================\n",
-    "\n",
-    "tampilkan_hero()\n",
-    "\n",
-    "halaman = st.radio(\n",
-    "    \"Pilih halaman\",\n",
-    "    [\"Enkripsi\", \"Dekripsi\"],\n",
-    "    key=\"pilihan_halaman\",\n",
-    "    horizontal=True,\n",
-    "    label_visibility=\"collapsed\"\n",
-    ")\n",
-    "\n",
-    "st.write(\"\")\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 10. HALAMAN ENKRIPSI\n",
-    "# =====================================================\n",
-    "\n",
-    "if halaman == \"Enkripsi\":\n",
-    "\n",
-    "    # ---------- LANGKAH 1: PILIH p ----------\n",
-    "    with st.container(key=\"kotak_p\"):\n",
-    "        kepala_langkah(\n",
-    "            1,\n",
-    "            \"Pilih bilangan prima p\",\n",
-    "            \"Geser ke kanan untuk prima yang lebih besar, \"\n",
-    "            \"ke kiri untuk prima yang lebih kecil.\"\n",
-    "        )\n",
-    "        angka_besar(\"p\", st.session_state[\"nilai_p\"])\n",
-    "\n",
-    "        p = st.select_slider(\n",
-    "            \"Bilangan prima p\",\n",
-    "            options=DAFTAR_PRIMA,\n",
-    "            value=st.session_state[\"nilai_p\"],\n",
-    "            key=\"slider_p\",\n",
-    "            on_change=simpan_p,\n",
-    "            label_visibility=\"collapsed\"\n",
-    "        )\n",
-    "\n",
-    "        st.markdown(\n",
-    "            f'<div class=\"catatan\">Tersedia {len(DAFTAR_PRIMA)} bilangan '\n",
-    "            f'prima, dari {DAFTAR_PRIMA[0]} sampai {DAFTAR_PRIMA[-1]}.</div>',\n",
-    "            unsafe_allow_html=True\n",
-    "        )\n",
-    "\n",
-    "    st.write(\"\")\n",
-    "\n",
-    "    # ---------- LANGKAH 2: PILIH q ----------\n",
-    "    with st.container(key=\"kotak_q\"):\n",
-    "        kepala_langkah(\n",
-    "            2,\n",
-    "            \"Pilih bilangan prima q\",\n",
-    "            \"Pilih prima yang berbeda dari p. Semakin besar p dan q, \"\n",
-    "            \"semakin sulit kuncinya ditebak.\"\n",
-    "        )\n",
-    "        angka_besar(\"q\", st.session_state[\"nilai_q\"])\n",
-    "\n",
-    "        q = st.select_slider(\n",
-    "            \"Bilangan prima q\",\n",
-    "            options=DAFTAR_PRIMA,\n",
-    "            value=st.session_state[\"nilai_q\"],\n",
-    "            key=\"slider_q\",\n",
-    "            on_change=simpan_q,\n",
-    "            label_visibility=\"collapsed\"\n",
-    "        )\n",
-    "\n",
-    "        st.markdown(\n",
-    "            f'<div class=\"catatan\">Tersedia {len(DAFTAR_PRIMA)} bilangan '\n",
-    "            f'prima, dari {DAFTAR_PRIMA[0]} sampai {DAFTAR_PRIMA[-1]}.</div>',\n",
-    "            unsafe_allow_html=True\n",
-    "        )\n",
-    "\n",
-    "    st.write(\"\")\n",
-    "\n",
-    "    # Ringkasan nilai n dan peringatan langsung\n",
-    "    if p == q:\n",
-    "        st.warning(\"p dan q harus berbeda agar dapat membentuk kunci RSA.\")\n",
-    "    else:\n",
-    "        st.markdown(\n",
-    "            f'<div class=\"rumus\">n = p × q = {p} × {q} = '\n",
-    "            f'<b>{p * q}</b></div>',\n",
-    "            unsafe_allow_html=True\n",
-    "        )\n",
-    "        if p * q <= KODE_MAKS:\n",
-    "            st.warning(\n",
-    "                f\"Nilai n masih terlalu kecil. n harus lebih besar dari \"\n",
-    "                f\"{KODE_MAKS}, jadi geser p atau q ke kanan.\"\n",
-    "            )\n",
-    "\n",
-    "    st.write(\"\")\n",
-    "\n",
-    "    # ---------- LANGKAH 3: PLAINTEXT ----------\n",
-    "    with st.container(key=\"kotak_pesan\"):\n",
-    "        kepala_langkah(\n",
-    "            3,\n",
-    "            \"Tulis pesan yang ingin dienkripsi\",\n",
-    "            \"Boleh huruf besar, huruf kecil, angka, spasi, dan simbol \"\n",
-    "            \"dengan kode ASCII 0–255.\"\n",
-    "        )\n",
-    "\n",
-    "        plaintext = st.text_area(\n",
-    "            \"Pesan (plaintext)\",\n",
-    "            value=\"HARI itu 123!\",\n",
-    "            placeholder=\"Contoh: Hari ini 17 Agustus!\",\n",
-    "            key=\"input_plaintext\",\n",
-    "            label_visibility=\"collapsed\"\n",
-    "        )\n",
-    "\n",
-    "        proses = st.button(\n",
-    "            \"Bangkitkan kunci dan enkripsi\",\n",
-    "            type=\"primary\"\n",
-    "        )\n",
-    "\n",
-    "    if proses:\n",
-    "\n",
-    "        st.session_state.pop(\"hasil_enkripsi\", None)\n",
-    "\n",
-    "        try:\n",
-    "            if plaintext == \"\":\n",
-    "                raise ValueError(\"Plaintext tidak boleh kosong.\")\n",
-    "\n",
-    "            kunci_publik, kunci_privat = bangkitkan_kunci(p, q)\n",
-    "            daftar_kode = teks_ke_kode(plaintext)\n",
-    "\n",
-    "            ciphertext = enkripsi(daftar_kode, kunci_publik)\n",
-    "\n",
-    "            st.session_state[\"hasil_enkripsi\"] = {\n",
-    "                \"p\": p,\n",
-    "                \"q\": q,\n",
-    "                \"e\": kunci_publik[0],\n",
-    "                \"n\": kunci_publik[1],\n",
-    "                \"d\": kunci_privat[0],\n",
-    "                \"plaintext\": plaintext,\n",
-    "                \"daftar_kode\": daftar_kode,\n",
-    "                \"ciphertext\": ciphertext\n",
-    "            }\n",
-    "\n",
-    "            # Simpan juga ciphertext agar mudah dipakai pada halaman dekripsi.\n",
-    "            st.session_state[\"ciphertext_untuk_dekripsi\"] = \", \".join(\n",
-    "                str(angka) for angka in ciphertext\n",
-    "            )\n",
-    "            st.session_state[\"d_untuk_dekripsi\"] = str(kunci_privat[0])\n",
-    "            st.session_state[\"n_untuk_dekripsi\"] = str(kunci_privat[1])\n",
-    "\n",
-    "            st.success(\n",
-    "                \"Kunci berhasil dibangkitkan dan pesan berhasil dienkripsi.\"\n",
-    "            )\n",
-    "\n",
-    "        except Exception as error:\n",
-    "            st.error(str(error))\n",
-    "\n",
-    "    st.write(\"\")\n",
-    "\n",
-    "    # ---------- HASIL ----------\n",
-    "    if \"hasil_enkripsi\" in st.session_state:\n",
-    "\n",
-    "        hasil = st.session_state[\"hasil_enkripsi\"]\n",
-    "\n",
-    "        with st.container(key=\"kotak_hasil\"):\n",
-    "            st.markdown(\n",
-    "                '<div class=\"langkah-judul\">Kunci RSA</div>',\n",
-    "                unsafe_allow_html=True\n",
-    "            )\n",
-    "\n",
-    "            st.markdown(\n",
-    "                '<div class=\"kunci-grid\">'\n",
-    "                '<div class=\"kunci publik\">'\n",
-    "                '<div class=\"kunci-judul\">Kunci publik</div>'\n",
-    "                f'<div class=\"kunci-baris\"><span>e</span>{hasil[\"e\"]}</div>'\n",
-    "                f'<div class=\"kunci-baris\"><span>n</span>{hasil[\"n\"]}</div>'\n",
-    "                '<div class=\"kunci-ket\">Boleh dibagikan. '\n",
-    "                'Dipakai untuk mengenkripsi pesan.</div>'\n",
-    "                '</div>'\n",
-    "                '<div class=\"kunci privat\">'\n",
-    "                '<div class=\"kunci-judul\">Kunci privat</div>'\n",
-    "                f'<div class=\"kunci-baris\"><span>d</span>{hasil[\"d\"]}</div>'\n",
-    "                f'<div class=\"kunci-baris\"><span>n</span>{hasil[\"n\"]}</div>'\n",
-    "                '<div class=\"kunci-ket\">Simpan sendiri, jangan dibagikan. '\n",
-    "                'Dipakai untuk mendekripsi pesan.</div>'\n",
-    "                '</div>'\n",
-    "                '</div>',\n",
-    "                unsafe_allow_html=True\n",
-    "            )\n",
-    "\n",
-    "            st.write(\"\")\n",
-    "            st.markdown(\n",
-    "                '<div class=\"langkah-judul\">Hasil enkripsi</div>',\n",
-    "                unsafe_allow_html=True\n",
-    "            )\n",
-    "\n",
-    "            label_kecil(\"Plaintext\")\n",
-    "            st.code(hasil[\"plaintext\"], language=None)\n",
-    "\n",
-    "            label_kecil(\"Kode karakter\")\n",
-    "            st.code(str(hasil[\"daftar_kode\"]), language=None)\n",
-    "\n",
-    "            label_kecil(\"Ciphertext\")\n",
-    "            ciphertext_teks = \", \".join(\n",
-    "                str(angka) for angka in hasil[\"ciphertext\"]\n",
-    "            )\n",
-    "            st.code(ciphertext_teks, language=None)\n",
-    "\n",
-    "            st.download_button(\n",
-    "                \"Unduh ciphertext\",\n",
-    "                data=ciphertext_teks,\n",
-    "                file_name=\"ciphertext_rsa.txt\",\n",
-    "                mime=\"text/plain\"\n",
-    "            )\n",
-    "    else:\n",
-    "        st.markdown(\n",
-    "            '<div class=\"kosong\">Kunci dan ciphertext akan muncul di sini '\n",
-    "            'setelah kamu menekan tombol <b>Bangkitkan kunci dan '\n",
-    "            'enkripsi</b>.</div>',\n",
-    "            unsafe_allow_html=True\n",
-    "        )\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 11. HALAMAN DEKRIPSI\n",
-    "# =====================================================\n",
-    "\n",
-    "elif halaman == \"Dekripsi\":\n",
-    "\n",
-    "    # Nilai default diisi dari proses enkripsi pada sesi yang sama.\n",
-    "    ciphertext_awal = st.session_state.get(\n",
-    "        \"ciphertext_untuk_dekripsi\", \"\"\n",
-    "    )\n",
-    "    d_awal = st.session_state.get(\"d_untuk_dekripsi\", \"\")\n",
-    "    n_awal = st.session_state.get(\"n_untuk_dekripsi\", \"\")\n",
-    "\n",
-    "    # ---------- LANGKAH 1: CIPHERTEXT ----------\n",
-    "    with st.container(key=\"kotak_cipher\"):\n",
-    "        kepala_langkah(\n",
-    "            1,\n",
-    "            \"Masukkan ciphertext\",\n",
-    "            \"Tempel deretan angka hasil enkripsi, dipisahkan dengan koma.\"\n",
-    "        )\n",
-    "\n",
-    "        ciphertext_input = st.text_area(\n",
-    "            \"Ciphertext\",\n",
-    "            value=ciphertext_awal,\n",
-    "            placeholder=\"Contoh: 1234, 5678, 9012\",\n",
-    "            key=\"input_ciphertext\",\n",
-    "            label_visibility=\"collapsed\"\n",
-    "        )\n",
-    "\n",
-    "    st.write(\"\")\n",
-    "\n",
-    "    # ---------- LANGKAH 2: KUNCI PRIVAT ----------\n",
-    "    with st.container(key=\"kotak_privat\"):\n",
-    "        kepala_langkah(\n",
-    "            2,\n",
-    "            \"Masukkan kunci privat\",\n",
-    "            \"Kunci privat terdiri dari d dan n. Keduanya harus berasal \"\n",
-    "            \"dari pasangan kunci yang sama dengan ciphertext.\"\n",
-    "        )\n",
-    "\n",
-    "        kolom_d, kolom_n = st.columns(2)\n",
-    "\n",
-    "        with kolom_d:\n",
-    "            d_input = st.text_input(\n",
-    "                \"Kunci privat d\",\n",
-    "                value=d_awal,\n",
-    "                placeholder=\"Masukkan nilai d\",\n",
-    "                key=\"input_d\"\n",
-    "            )\n",
-    "\n",
-    "        with kolom_n:\n",
-    "            n_input = st.text_input(\n",
-    "                \"Nilai n\",\n",
-    "                value=n_awal,\n",
-    "                placeholder=\"Masukkan nilai n\",\n",
-    "                key=\"input_n\"\n",
-    "            )\n",
-    "\n",
-    "        proses_dekripsi = st.button(\"Dekripsi pesan\", type=\"primary\")\n",
-    "\n",
-    "    if proses_dekripsi:\n",
-    "\n",
-    "        try:\n",
-    "            if not ciphertext_input.strip():\n",
-    "                raise ValueError(\"Ciphertext belum diisi.\")\n",
-    "\n",
-    "            if not d_input.strip() or not n_input.strip():\n",
-    "                raise ValueError(\"Kunci privat d dan nilai n harus diisi.\")\n",
-    "\n",
-    "            d = int(d_input)\n",
-    "            n = int(n_input)\n",
-    "\n",
-    "            if d <= 0 or n <= 1:\n",
-    "                raise ValueError(\n",
-    "                    \"Nilai d harus positif dan n harus lebih besar dari 1.\"\n",
-    "                )\n",
-    "\n",
-    "            ciphertext = parse_ciphertext(ciphertext_input)\n",
-    "\n",
-    "            if any(angka >= n for angka in ciphertext):\n",
-    "                raise ValueError(\n",
-    "                    \"Setiap angka ciphertext harus lebih kecil dari n.\"\n",
-    "                )\n",
-    "\n",
-    "            hasil_kode = dekripsi(ciphertext, (d, n))\n",
-    "            plaintext_hasil = kode_ke_teks(hasil_kode)\n",
-    "\n",
-    "            st.session_state[\"hasil_dekripsi\"] = {\n",
-    "                \"ciphertext\": ciphertext,\n",
-    "                \"hasil_kode\": hasil_kode,\n",
-    "                \"plaintext\": plaintext_hasil\n",
-    "            }\n",
-    "\n",
-    "        except Exception as error:\n",
-    "            st.session_state.pop(\"hasil_dekripsi\", None)\n",
-    "            st.error(f\"Dekripsi gagal: {error}\")\n",
-    "\n",
-    "    st.write(\"\")\n",
-    "\n",
-    "    # ---------- HASIL ----------\n",
-    "    if \"hasil_dekripsi\" in st.session_state:\n",
-    "\n",
-    "        hasil = st.session_state[\"hasil_dekripsi\"]\n",
-    "\n",
-    "        with st.container(key=\"kotak_hasil_dekripsi\"):\n",
-    "            st.markdown(\n",
-    "                '<div class=\"langkah-judul\">Hasil dekripsi</div>',\n",
-    "                unsafe_allow_html=True\n",
-    "            )\n",
-    "\n",
-    "            label_kecil(\"Pesan asli (plaintext)\")\n",
-    "            st.markdown(\n",
-    "                f'<div class=\"hasil-teks\">'\n",
-    "                f'{html.escape(hasil[\"plaintext\"])}</div>',\n",
-    "                unsafe_allow_html=True\n",
-    "            )\n",
-    "\n",
-    "            label_kecil(\"Kode karakter setelah dekripsi\")\n",
-    "            st.code(str(hasil[\"hasil_kode\"]), language=None)\n",
-    "\n",
-    "            label_kecil(\"Ciphertext yang diproses\")\n",
-    "            st.code(\n",
-    "                \", \".join(str(x) for x in hasil[\"ciphertext\"]),\n",
-    "                language=None\n",
-    "            )\n",
-    "    else:\n",
-    "        st.markdown(\n",
-    "            '<div class=\"kosong\">Pesan asli akan muncul di sini setelah '\n",
-    "            'kamu menekan tombol <b>Dekripsi pesan</b>.</div>',\n",
-    "            unsafe_allow_html=True\n",
-    "        )\n",
-    "\n",
-    "\n",
-    "# =====================================================\n",
-    "# 12. FOOTER\n",
-    "# =====================================================\n",
-    "\n",
-    "st.markdown(\n",
-    "    '<div class=\"footer-kecil\">Aplikasi pembelajaran RSA, '\n",
-    "    'dibuat dengan Python dan Streamlit.</div>',\n",
-    "    unsafe_allow_html=True\n",
-    ")"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 7,
-   "id": "450dc70b-a1f4-4f19-87a8-1c7c898cb217",
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "C:\\Users\\ARIFINA\\Downloads\n"
-     ]
-    }
-   ],
-   "source": [
-    "import os\n",
-    "print(os.getcwd())"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python [conda env:base] *",
-   "language": "python",
-   "name": "conda-base-py"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.13.9"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
+import html
+
+import streamlit as st
+
+# =====================================================
+# 1. KONFIGURASI HALAMAN
+# =====================================================
+
+st.set_page_config(
+    page_title="RSA: Enkripsi & Dekripsi",
+    page_icon="🔐",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+LEBAR_KODE = 3
+KODE_MAKS = 255
+
+# Batas maksimal bilangan prima yang bisa dipilih pada slider.
+BATAS_PRIMA = 1000
+
+
+# =====================================================
+# 2. TAMPILAN (CSS)
+# =====================================================
+# Palet warna:
+#   teal tua   #0B4A4A  latar hero
+#   teal       #0E7C7B  warna utama (tombol, slider, angka)
+#   mint       #E3F3F1  latar kunci publik
+#   kuning     #F5B83D  penanda langkah dan kunci privat
+#   tinta      #10302F  teks utama
+# Font:
+#   Bricolage Grotesque untuk judul dan angka
+#   Figtree untuk teks biasa
+#   JetBrains Mono untuk angka kunci dan ciphertext
+
+CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+    --tinta: #10302F;
+    --redup: #4B6A68;
+    --teal: #0E7C7B;
+    --teal-gelap: #0A5F5E;
+    --teal-tua: #0B4A4A;
+    --mint: #E3F3F1;
+    --garis: #BFD9D6;
+    --latar: #F2F8F7;
+    --kuning: #F5B83D;
+    --kuning-muda: #FFF1CF;
+    --font-judul: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif;
+    --font-isi: 'Figtree', 'Segoe UI', sans-serif;
+    --font-kode: 'JetBrains Mono', Consolas, monospace;
 }
+
+/* ---------- Dasar halaman ---------- */
+.stApp {
+    background: var(--latar);
+    color: var(--tinta);
+    font-family: var(--font-isi);
+}
+.stApp p, .stApp li, .stApp label, .stApp input, .stApp textarea, .stApp button {
+    font-family: var(--font-isi);
+}
+.block-container {
+    max-width: 1040px;
+    padding-top: 2.2rem;
+    padding-bottom: 4rem;
+}
+#MainMenu, footer { visibility: hidden; }
+[data-testid="stHeader"] { background: transparent; }
+[data-testid="stAppDeployButton"] { display: none; }
+[data-testid="InputInstructions"] { display: none; }
+
+/* ---------- Hero ---------- */
+.hero {
+    background: var(--teal-tua);
+    border-radius: 26px;
+    padding: 2.3rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+.hero-teks { flex: 1 1 auto; max-width: 29rem; }
+.hero-judul {
+    font-family: var(--font-judul);
+    font-weight: 700;
+    font-size: 2.7rem;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin-bottom: 0.9rem;
+}
+.hero-ket {
+    color: #CFE8E6;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+}
+.hero-prima {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 0.3rem 1rem;
+    max-width: 25rem;
+    font-family: var(--font-judul);
+    font-weight: 700;
+    line-height: 1;
+    color: #1E7F7C;
+    user-select: none;
+}
+.hero-prima .s { font-size: 1.4rem; }
+.hero-prima .m { font-size: 2.2rem; }
+.hero-prima .l { font-size: 3.4rem; }
+.hero-prima .sorot { color: var(--kuning); }
+
+/* ---------- Navigasi (radio dibuat seperti tombol pil) ---------- */
+div[role="radiogroup"] { gap: 0.6rem; margin-bottom: 0.4rem; }
+div[role="radiogroup"] > label {
+    background: #FFFFFF;
+    border: 1.5px solid var(--garis);
+    border-radius: 999px;
+    padding: 0.4rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+div[role="radiogroup"] > label > div:first-child { display: none; }
+div[role="radiogroup"] > label p {
+    font-weight: 600;
+    color: var(--teal-gelap);
+}
+div[role="radiogroup"] > label:hover { border-color: var(--teal); }
+div[role="radiogroup"] > label:has(input:checked) {
+    background: var(--teal);
+    border-color: var(--teal);
+}
+div[role="radiogroup"] > label:has(input:checked) p { color: #FFFFFF; }
+
+/* ---------- Kotak langkah ---------- */
+div[class*="st-key-kotak"] {
+    background: #FFFFFF;
+    border: 1.5px solid var(--garis);
+    border-radius: 18px;
+    padding: 1.4rem 1.6rem 1.5rem;
+}
+.langkah {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+}
+.nomor {
+    flex: 0 0 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background: var(--kuning);
+    color: var(--tinta);
+    font-family: var(--font-judul);
+    font-weight: 700;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.langkah-judul {
+    font-family: var(--font-judul);
+    font-weight: 700;
+    font-size: 1.3rem;
+    line-height: 1.2;
+    color: var(--tinta);
+}
+.langkah-ket {
+    color: var(--redup);
+    font-size: 0.95rem;
+    margin-top: 0.2rem;
+}
+.angka-besar {
+    font-family: var(--font-judul);
+    font-weight: 700;
+    font-size: 3.4rem;
+    line-height: 1;
+    color: var(--teal);
+    margin: 0.3rem 0 0.7rem;
+}
+.angka-besar span {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--redup);
+    margin-right: 0.6rem;
+}
+.catatan {
+    color: var(--redup);
+    font-size: 0.88rem;
+    margin-top: 0.2rem;
+}
+
+/* ---------- Strip rumus n ---------- */
+.rumus {
+    background: var(--mint);
+    border: 1.5px dashed #7FB8B4;
+    border-radius: 14px;
+    padding: 0.85rem 1.2rem;
+    margin: 0.2rem 0;
+    font-family: var(--font-judul);
+    font-size: 1.2rem;
+    color: var(--tinta);
+}
+.rumus b { color: var(--teal-gelap); font-size: 1.35rem; }
+
+/* ---------- Slider ---------- */
+[data-testid="stSlider"] div[role="slider"] {
+    background: var(--teal) !important;
+    border: 3px solid #FFFFFF !important;
+    box-shadow: 0 0 0 2px var(--teal) !important;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+[data-testid="stThumbValue"] {
+    color: var(--teal-gelap) !important;
+    font-family: var(--font-judul);
+    font-weight: 700;
+}
+[data-testid="stTickBarMin"], [data-testid="stTickBarMax"] {
+    color: var(--redup);
+}
+
+/* ---------- Input teks ---------- */
+div[data-baseweb="textarea"], div[data-baseweb="input"] {
+    border: 1.5px solid var(--garis) !important;
+    border-radius: 12px !important;
+    background: #FFFFFF !important;
+}
+div[data-baseweb="base-input"] { background: #FFFFFF !important; }
+div[data-baseweb="textarea"]:focus-within, div[data-baseweb="input"]:focus-within {
+    border-color: var(--teal) !important;
+    box-shadow: 0 0 0 3px rgba(14, 124, 123, 0.18);
+}
+.stTextArea textarea, .stTextInput input {
+    color: var(--tinta);
+    font-size: 1rem;
+}
+
+/* ---------- Tombol ---------- */
+.stButton > button, .stDownloadButton > button {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    transition: background 0.15s, border-color 0.15s;
+}
+.stButton > button[kind="primary"], [data-testid="stBaseButton-primary"] {
+    background: var(--teal) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+}
+.stButton > button[kind="primary"]:hover, [data-testid="stBaseButton-primary"]:hover {
+    background: var(--teal-gelap) !important;
+}
+.stDownloadButton > button, [data-testid="stBaseButton-secondary"] {
+    background: #FFFFFF !important;
+    color: var(--teal-gelap) !important;
+    border: 1.5px solid var(--teal) !important;
+}
+.stDownloadButton > button:hover, [data-testid="stBaseButton-secondary"]:hover {
+    background: var(--mint) !important;
+}
+button:focus-visible {
+    outline: 3px solid var(--kuning) !important;
+    outline-offset: 2px;
+}
+
+/* ---------- Pesan peringatan ---------- */
+[data-testid="stAlert"] { border-radius: 12px; }
+
+/* ---------- Blok kode (plaintext, ciphertext) ---------- */
+[data-testid="stCode"] {
+    border: 1.5px solid var(--garis);
+    border-radius: 12px;
+    overflow: hidden;
+}
+[data-testid="stCode"] pre, [data-testid="stCode"] code {
+    background: #F0F7F6 !important;
+    color: var(--tinta) !important;
+    font-family: var(--font-kode) !important;
+    font-size: 0.9rem !important;
+    white-space: pre-wrap !important;
+    word-break: break-word;
+}
+.label {
+    font-weight: 600;
+    color: var(--tinta);
+    margin: 1rem 0 0.35rem;
+    font-size: 0.95rem;
+}
+
+/* ---------- Kartu kunci ---------- */
+.kunci-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 0.8rem 0 0.4rem;
+}
+.kunci {
+    border-radius: 16px;
+    padding: 1.1rem 1.3rem;
+    border: 1.5px solid;
+}
+.kunci.publik { background: var(--mint); border-color: #7FB8B4; }
+.kunci.privat { background: var(--kuning-muda); border-color: #E3B04B; }
+.kunci-judul {
+    font-family: var(--font-judul);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+}
+.kunci-baris {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    font-family: var(--font-kode);
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin: 0.2rem 0;
+    word-break: break-all;
+}
+.kunci-baris span { color: var(--redup); min-width: 1.2rem; }
+.kunci-ket {
+    margin-top: 0.7rem;
+    color: var(--redup);
+    font-size: 0.9rem;
+}
+
+/* ---------- Kondisi kosong dan hasil dekripsi ---------- */
+.kosong {
+    border: 1.5px dashed var(--garis);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--redup);
+}
+.hasil-teks {
+    background: var(--mint);
+    border: 1.5px solid #7FB8B4;
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    font-size: 1.25rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+.footer-kecil {
+    color: var(--redup);
+    font-size: 0.85rem;
+    margin-top: 2.2rem;
+}
+
+/* ---------- Layar kecil ---------- */
+@media (max-width: 760px) {
+    .hero { padding: 1.6rem; }
+    .hero-judul { font-size: 2rem; }
+    .hero-prima { display: none; }
+    .kunci-grid { grid-template-columns: 1fr; }
+    div[class*="st-key-kotak"] { padding: 1.1rem 1.1rem 1.2rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}
+</style>
+"""
+
+st.markdown(CSS, unsafe_allow_html=True)
+
+
+# =====================================================
+# 3. KOMPONEN TAMPILAN
+# =====================================================
+
+PRIMA_HERO = [
+    (2, "s"), (3, "m"), (5, "s"), (7, "l"), (11, "s"), (13, "m"),
+    (17, "s"), (19, "m"), (23, "l"), (29, "s"), (31, "m"), (37, "s"),
+    (41, "m"), (43, "s"), (47, "l sorot"), (53, "s"), (59, "m"),
+    (61, "s"), (67, "m"), (71, "l sorot"),
+]
+
+
+def tampilkan_hero():
+    angka_prima = "".join(
+        f'<span class="{kelas}">{angka}</span>'
+        for angka, kelas in PRIMA_HERO
+    )
+    st.markdown(
+        '<div class="hero"><div class="hero-teks">'
+        '<div class="hero-judul">Pesan rahasia dari dua bilangan prima</div>'
+        '<p class="hero-ket">Aplikasi belajar enkripsi dan dekripsi RSA. '
+        'Pilih p dan q, tulis pesanmu, lalu lihat bagaimana pesan itu '
+        'berubah menjadi deretan angka yang hanya bisa dibuka dengan '
+        'kunci privat.</p></div>'
+        f'<div class="hero-prima" aria-hidden="true">{angka_prima}</div>'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+
+def kepala_langkah(nomor, judul, keterangan):
+    st.markdown(
+        f'<div class="langkah"><div class="nomor">{nomor}</div>'
+        f'<div><div class="langkah-judul">{judul}</div>'
+        f'<div class="langkah-ket">{keterangan}</div></div></div>',
+        unsafe_allow_html=True
+    )
+
+
+def angka_besar(huruf, nilai):
+    st.markdown(
+        f'<div class="angka-besar"><span>{huruf} =</span>{nilai}</div>',
+        unsafe_allow_html=True
+    )
+
+
+def label_kecil(teks):
+    st.markdown(f'<div class="label">{teks}</div>', unsafe_allow_html=True)
+
+
+# =====================================================
+# 4. FUNGSI BILANGAN PRIMA
+# =====================================================
+
+def cek_prima(n):
+    """Memeriksa apakah n merupakan bilangan prima."""
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+
+    pembagi = 3
+    while pembagi * pembagi <= n:
+        if n % pembagi == 0:
+            return False
+        pembagi += 2
+
+    return True
+
+
+@st.cache_data
+def daftar_prima(batas):
+    """Membuat daftar semua bilangan prima dari 2 sampai batas."""
+    return [angka for angka in range(2, batas + 1) if cek_prima(angka)]
+
+
+DAFTAR_PRIMA = daftar_prima(BATAS_PRIMA)
+
+
+# =====================================================
+# 5. FUNGSI MATEMATIKA RSA
+# =====================================================
+
+def pbb(a, b):
+    """Menghitung Faktor Persekutuan Terbesar."""
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+
+def euclid_diperluas(a, b):
+    """Menghasilkan g, x, y sehingga a*x + b*y = g."""
+    if b == 0:
+        return a, 1, 0
+
+    g, x, y = euclid_diperluas(b, a % b)
+    return g, y, x - (a // b) * y
+
+
+def balikan_mod(e, m):
+    """Menghitung invers modulo."""
+    g, x, _ = euclid_diperluas(e, m)
+
+    if g != 1:
+        raise ValueError("Balikan modulo tidak ditemukan.")
+
+    return x % m
+
+
+def pangkat_mod(b, e, n):
+    """Menghitung b^e mod n dengan square-and-multiply."""
+    hasil = 1
+    b %= n
+
+    while e > 0:
+        if e % 2 == 1:
+            hasil = (hasil * b) % n
+        b = (b * b) % n
+        e //= 2
+
+    return hasil
+
+
+# =====================================================
+# 6. PEMBANGKITAN KUNCI RSA
+# =====================================================
+
+def bangkitkan_kunci(p, q):
+    """Membuat kunci publik dan privat dari p dan q."""
+    if not cek_prima(p):
+        raise ValueError("Nilai p harus bilangan prima.")
+
+    if not cek_prima(q):
+        raise ValueError("Nilai q harus bilangan prima.")
+
+    if p == q:
+        raise ValueError("Nilai p dan q harus berbeda.")
+
+    n = p * q
+    phi = (p - 1) * (q - 1)
+
+    # Gunakan e = 65537 jika memenuhi syarat.
+    e = 65537
+
+    # Untuk contoh prima kecil, pilih e lain jika 65537 tidak sesuai.
+    if e >= phi or pbb(e, phi) != 1:
+        e = 3
+        while e < phi and pbb(e, phi) != 1:
+            e += 2
+
+    if e >= phi:
+        raise ValueError("Tidak ditemukan nilai e yang sesuai.")
+
+    d = balikan_mod(e, phi)
+
+    kunci_publik = (e, n)
+    kunci_privat = (d, n)
+
+    return kunci_publik, kunci_privat
+
+
+# =====================================================
+# 7. KONVERSI TEKS DAN ENKRIPSI/DEKRIPSI
+# =====================================================
+
+def teks_ke_kode(teks):
+    """
+    Mengubah setiap karakter menjadi kode ASCII 0–255.
+    Mendukung huruf besar/kecil, angka, spasi, dan simbol ASCII.
+    """
+    karakter_tidak_didukung = [
+        karakter for karakter in teks
+        if ord(karakter) > KODE_MAKS
+    ]
+
+    if karakter_tidak_didukung:
+        raise ValueError(
+            "Ada karakter di luar rentang ASCII 0–255. "
+            "Untuk versi ini, emoji dan beberapa karakter Unicode "
+            "belum didukung."
+        )
+
+    return [ord(karakter) for karakter in teks]
+
+
+def kode_ke_teks(kode):
+    """Mengubah daftar kode ASCII kembali menjadi teks."""
+    if any(angka < 0 or angka > KODE_MAKS for angka in kode):
+        raise ValueError("Hasil dekripsi mengandung kode di luar 0–255.")
+
+    return "".join(chr(angka) for angka in kode)
+
+
+def enkripsi(daftar_kode, kunci_publik):
+    """Mengenkripsi setiap kode karakter dengan kunci publik."""
+    e, n = kunci_publik
+
+    if n <= KODE_MAKS:
+        raise ValueError(
+            "n harus lebih besar dari 255. Pilih p dan q yang lebih besar."
+        )
+
+    return [pangkat_mod(angka, e, n) for angka in daftar_kode]
+
+
+def dekripsi(ciphertext, kunci_privat):
+    """Mendekripsi setiap angka ciphertext dengan kunci privat."""
+    d, n = kunci_privat
+    return [pangkat_mod(angka, d, n) for angka in ciphertext]
+
+
+def parse_ciphertext(teks_cipher):
+    """Membaca ciphertext berupa angka yang dipisahkan koma atau spasi."""
+    teks_cipher = teks_cipher.replace(",", " ")
+    bagian = teks_cipher.split()
+
+    if not bagian:
+        raise ValueError("Ciphertext belum diisi.")
+
+    try:
+        angka = [int(item) for item in bagian]
+    except ValueError:
+        raise ValueError(
+            "Ciphertext harus berupa angka yang dipisahkan koma atau spasi."
+        )
+
+    if any(item < 0 for item in angka):
+        raise ValueError("Ciphertext tidak boleh berisi angka negatif.")
+
+    return angka
+
+
+# =====================================================
+# 8. STATE UNTUK SLIDER PRIMA p DAN q
+# =====================================================
+# Nilai p dan q disimpan terpisah dari widget slider supaya
+# tidak hilang saat pengguna berpindah ke halaman Dekripsi.
+
+if "nilai_p" not in st.session_state:
+    st.session_state["nilai_p"] = 47
+
+if "nilai_q" not in st.session_state:
+    st.session_state["nilai_q"] = 71
+
+
+def simpan_p():
+    st.session_state["nilai_p"] = st.session_state["slider_p"]
+
+
+def simpan_q():
+    st.session_state["nilai_q"] = st.session_state["slider_q"]
+
+
+# =====================================================
+# 9. KEPALA HALAMAN DAN NAVIGASI
+# =====================================================
+
+tampilkan_hero()
+
+halaman = st.radio(
+    "Pilih halaman",
+    ["Enkripsi", "Dekripsi"],
+    key="pilihan_halaman",
+    horizontal=True,
+    label_visibility="collapsed"
+)
+
+st.write("")
+
+
+# =====================================================
+# 10. HALAMAN ENKRIPSI
+# =====================================================
+
+if halaman == "Enkripsi":
+
+    # ---------- LANGKAH 1: PILIH p ----------
+    with st.container(key="kotak_p"):
+        kepala_langkah(
+            1,
+            "Pilih bilangan prima p",
+            "Geser ke kanan untuk prima yang lebih besar, "
+            "ke kiri untuk prima yang lebih kecil."
+        )
+        angka_besar("p", st.session_state["nilai_p"])
+
+        p = st.select_slider(
+            "Bilangan prima p",
+            options=DAFTAR_PRIMA,
+            value=st.session_state["nilai_p"],
+            key="slider_p",
+            on_change=simpan_p,
+            label_visibility="collapsed"
+        )
+
+        st.markdown(
+            f'<div class="catatan">Tersedia {len(DAFTAR_PRIMA)} bilangan '
+            f'prima, dari {DAFTAR_PRIMA[0]} sampai {DAFTAR_PRIMA[-1]}.</div>',
+            unsafe_allow_html=True
+        )
+
+    st.write("")
+
+    # ---------- LANGKAH 2: PILIH q ----------
+    with st.container(key="kotak_q"):
+        kepala_langkah(
+            2,
+            "Pilih bilangan prima q",
+            "Pilih prima yang berbeda dari p. Semakin besar p dan q, "
+            "semakin sulit kuncinya ditebak."
+        )
+        angka_besar("q", st.session_state["nilai_q"])
+
+        q = st.select_slider(
+            "Bilangan prima q",
+            options=DAFTAR_PRIMA,
+            value=st.session_state["nilai_q"],
+            key="slider_q",
+            on_change=simpan_q,
+            label_visibility="collapsed"
+        )
+
+        st.markdown(
+            f'<div class="catatan">Tersedia {len(DAFTAR_PRIMA)} bilangan '
+            f'prima, dari {DAFTAR_PRIMA[0]} sampai {DAFTAR_PRIMA[-1]}.</div>',
+            unsafe_allow_html=True
+        )
+
+    st.write("")
+
+    # Ringkasan nilai n dan peringatan langsung
+    if p == q:
+        st.warning("p dan q harus berbeda agar dapat membentuk kunci RSA.")
+    else:
+        st.markdown(
+            f'<div class="rumus">n = p × q = {p} × {q} = '
+            f'<b>{p * q}</b></div>',
+            unsafe_allow_html=True
+        )
+        if p * q <= KODE_MAKS:
+            st.warning(
+                f"Nilai n masih terlalu kecil. n harus lebih besar dari "
+                f"{KODE_MAKS}, jadi geser p atau q ke kanan."
+            )
+
+    st.write("")
+
+    # ---------- LANGKAH 3: PLAINTEXT ----------
+    with st.container(key="kotak_pesan"):
+        kepala_langkah(
+            3,
+            "Tulis pesan yang ingin dienkripsi",
+            "Boleh huruf besar, huruf kecil, angka, spasi, dan simbol "
+            "dengan kode ASCII 0–255."
+        )
+
+        plaintext = st.text_area(
+            "Pesan (plaintext)",
+            value="HARI itu 123!",
+            placeholder="Contoh: Hari ini 17 Agustus!",
+            key="input_plaintext",
+            label_visibility="collapsed"
+        )
+
+        proses = st.button(
+            "Bangkitkan kunci dan enkripsi",
+            type="primary"
+        )
+
+    if proses:
+
+        st.session_state.pop("hasil_enkripsi", None)
+
+        try:
+            if plaintext == "":
+                raise ValueError("Plaintext tidak boleh kosong.")
+
+            kunci_publik, kunci_privat = bangkitkan_kunci(p, q)
+            daftar_kode = teks_ke_kode(plaintext)
+
+            ciphertext = enkripsi(daftar_kode, kunci_publik)
+
+            st.session_state["hasil_enkripsi"] = {
+                "p": p,
+                "q": q,
+                "e": kunci_publik[0],
+                "n": kunci_publik[1],
+                "d": kunci_privat[0],
+                "plaintext": plaintext,
+                "daftar_kode": daftar_kode,
+                "ciphertext": ciphertext
+            }
+
+            # Simpan juga ciphertext agar mudah dipakai pada halaman dekripsi.
+            st.session_state["ciphertext_untuk_dekripsi"] = ", ".join(
+                str(angka) for angka in ciphertext
+            )
+            st.session_state["d_untuk_dekripsi"] = str(kunci_privat[0])
+            st.session_state["n_untuk_dekripsi"] = str(kunci_privat[1])
+
+            st.success(
+                "Kunci berhasil dibangkitkan dan pesan berhasil dienkripsi."
+            )
+
+        except Exception as error:
+            st.error(str(error))
+
+    st.write("")
+
+    # ---------- HASIL ----------
+    if "hasil_enkripsi" in st.session_state:
+
+        hasil = st.session_state["hasil_enkripsi"]
+
+        with st.container(key="kotak_hasil"):
+            st.markdown(
+                '<div class="langkah-judul">Kunci RSA</div>',
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                '<div class="kunci-grid">'
+                '<div class="kunci publik">'
+                '<div class="kunci-judul">Kunci publik</div>'
+                f'<div class="kunci-baris"><span>e</span>{hasil["e"]}</div>'
+                f'<div class="kunci-baris"><span>n</span>{hasil["n"]}</div>'
+                '<div class="kunci-ket">Boleh dibagikan. '
+                'Dipakai untuk mengenkripsi pesan.</div>'
+                '</div>'
+                '<div class="kunci privat">'
+                '<div class="kunci-judul">Kunci privat</div>'
+                f'<div class="kunci-baris"><span>d</span>{hasil["d"]}</div>'
+                f'<div class="kunci-baris"><span>n</span>{hasil["n"]}</div>'
+                '<div class="kunci-ket">Simpan sendiri, jangan dibagikan. '
+                'Dipakai untuk mendekripsi pesan.</div>'
+                '</div>'
+                '</div>',
+                unsafe_allow_html=True
+            )
+
+            st.write("")
+            st.markdown(
+                '<div class="langkah-judul">Hasil enkripsi</div>',
+                unsafe_allow_html=True
+            )
+
+            label_kecil("Plaintext")
+            st.code(hasil["plaintext"], language=None)
+
+            label_kecil("Kode karakter")
+            st.code(str(hasil["daftar_kode"]), language=None)
+
+            label_kecil("Ciphertext")
+            ciphertext_teks = ", ".join(
+                str(angka) for angka in hasil["ciphertext"]
+            )
+            st.code(ciphertext_teks, language=None)
+
+            st.download_button(
+                "Unduh ciphertext",
+                data=ciphertext_teks,
+                file_name="ciphertext_rsa.txt",
+                mime="text/plain"
+            )
+    else:
+        st.markdown(
+            '<div class="kosong">Kunci dan ciphertext akan muncul di sini '
+            'setelah kamu menekan tombol <b>Bangkitkan kunci dan '
+            'enkripsi</b>.</div>',
+            unsafe_allow_html=True
+        )
+
+
+# =====================================================
+# 11. HALAMAN DEKRIPSI
+# =====================================================
+
+elif halaman == "Dekripsi":
+
+    # Nilai default diisi dari proses enkripsi pada sesi yang sama.
+    ciphertext_awal = st.session_state.get(
+        "ciphertext_untuk_dekripsi", ""
+    )
+    d_awal = st.session_state.get("d_untuk_dekripsi", "")
+    n_awal = st.session_state.get("n_untuk_dekripsi", "")
+
+    # ---------- LANGKAH 1: CIPHERTEXT ----------
+    with st.container(key="kotak_cipher"):
+        kepala_langkah(
+            1,
+            "Masukkan ciphertext",
+            "Tempel deretan angka hasil enkripsi, dipisahkan dengan koma."
+        )
+
+        ciphertext_input = st.text_area(
+            "Ciphertext",
+            value=ciphertext_awal,
+            placeholder="Contoh: 1234, 5678, 9012",
+            key="input_ciphertext",
+            label_visibility="collapsed"
+        )
+
+    st.write("")
+
+    # ---------- LANGKAH 2: KUNCI PRIVAT ----------
+    with st.container(key="kotak_privat"):
+        kepala_langkah(
+            2,
+            "Masukkan kunci privat",
+            "Kunci privat terdiri dari d dan n. Keduanya harus berasal "
+            "dari pasangan kunci yang sama dengan ciphertext."
+        )
+
+        kolom_d, kolom_n = st.columns(2)
+
+        with kolom_d:
+            d_input = st.text_input(
+                "Kunci privat d",
+                value=d_awal,
+                placeholder="Masukkan nilai d",
+                key="input_d"
+            )
+
+        with kolom_n:
+            n_input = st.text_input(
+                "Nilai n",
+                value=n_awal,
+                placeholder="Masukkan nilai n",
+                key="input_n"
+            )
+
+        proses_dekripsi = st.button("Dekripsi pesan", type="primary")
+
+    if proses_dekripsi:
+
+        try:
+            if not ciphertext_input.strip():
+                raise ValueError("Ciphertext belum diisi.")
+
+            if not d_input.strip() or not n_input.strip():
+                raise ValueError("Kunci privat d dan nilai n harus diisi.")
+
+            d = int(d_input)
+            n = int(n_input)
+
+            if d <= 0 or n <= 1:
+                raise ValueError(
+                    "Nilai d harus positif dan n harus lebih besar dari 1."
+                )
+
+            ciphertext = parse_ciphertext(ciphertext_input)
+
+            if any(angka >= n for angka in ciphertext):
+                raise ValueError(
+                    "Setiap angka ciphertext harus lebih kecil dari n."
+                )
+
+            hasil_kode = dekripsi(ciphertext, (d, n))
+            plaintext_hasil = kode_ke_teks(hasil_kode)
+
+            st.session_state["hasil_dekripsi"] = {
+                "ciphertext": ciphertext,
+                "hasil_kode": hasil_kode,
+                "plaintext": plaintext_hasil
+            }
+
+        except Exception as error:
+            st.session_state.pop("hasil_dekripsi", None)
+            st.error(f"Dekripsi gagal: {error}")
+
+    st.write("")
+
+    # ---------- HASIL ----------
+    if "hasil_dekripsi" in st.session_state:
+
+        hasil = st.session_state["hasil_dekripsi"]
+
+        with st.container(key="kotak_hasil_dekripsi"):
+            st.markdown(
+                '<div class="langkah-judul">Hasil dekripsi</div>',
+                unsafe_allow_html=True
+            )
+
+            label_kecil("Pesan asli (plaintext)")
+            st.markdown(
+                f'<div class="hasil-teks">'
+                f'{html.escape(hasil["plaintext"])}</div>',
+                unsafe_allow_html=True
+            )
+
+            label_kecil("Kode karakter setelah dekripsi")
+            st.code(str(hasil["hasil_kode"]), language=None)
+
+            label_kecil("Ciphertext yang diproses")
+            st.code(
+                ", ".join(str(x) for x in hasil["ciphertext"]),
+                language=None
+            )
+    else:
+        st.markdown(
+            '<div class="kosong">Pesan asli akan muncul di sini setelah '
+            'kamu menekan tombol <b>Dekripsi pesan</b>.</div>',
+            unsafe_allow_html=True
+        )
+
+
+# =====================================================
+# 12. FOOTER
+# =====================================================
+
+st.markdown(
+    '<div class="footer-kecil">Aplikasi pembelajaran RSA, '
+    'dibuat dengan Python dan Streamlit.</div>',
+    unsafe_allow_html=True
+)
